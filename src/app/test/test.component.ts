@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component,OnInit } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-test',
@@ -7,59 +7,101 @@ import { Observable } from 'rxjs';
   styleUrls: ['./test.component.css']
 })
 export class TestComponent implements OnInit {
-  txt ?: string;
+  txt?: string;
+  txt1? : string;
   constructor() { }
+//   ngOnInit():void{ 
+//     const promise = new Promise(resolve =>{
+//       console.log('Promise Call......')
+//       this.txt = 'Promise Call'
+//       setTimeout(() => {
+//         resolve('Promise is working')
+//         this.txt = 'Promise Working'
+        
+//       }, 2000);
+//     })
+//     // promise.then(result =>{  //Listen to the consumer
+//     //   console.log(result)
+//     // })
 
-  ngOnInit(): void {  //Executes immediately
-    let promise = new Promise((resolve) => {
-      this.txt = "Prom is running";
-      console.log("Promise is running");
-      resolve("Success Call");
 
-    });
+//      //observable()
+//    const observable = new Observable(subscribe =>{
+//     console.log('Obervable Call....')
+//     this.txt1 = 'Observable Call'
+//     setTimeout(() => {
+//       subscribe.next('Observable is working')
+//       this.txt1 = 'Observable is working'
+      
+//     }, 2000);
+//   })
+//   observable.subscribe(result =>{
+//     console.log(result)
+//   })
+//   }
+// } 
+// }
 
-    promise.then(value => {
-      console.log(value);
+
+
+
+  ngOnInit(): void {  // Emit only single value
+    let promise = new Promise((x) => {
+      setTimeout(() => {
+        x("Promise");
+        x("Promise1");
+        x("Promise2");
+
+      }, 2000);
+    })
+    promise.then(value => { //Listen to the consumer
+      console.log(value)
+      this.txt = "Emits Single value"
+
     })
 
+    let test = new Observable((x)=>{ //Emits Multiple Values
+      setTimeout(() => {
+        x.next("Multiple 1")
+        x.next("Multiple 2")
+        x.next("Multiple 3")
+        
+      }, 1000);
+     
+    })
+    test.subscribe(value =>{
+      console.log(value);
+      this.txt1= "Emits Multple values"
+    })
+  }
   }
 
-  // ngOnInit(): void {  //Executes only with subscribe
-  //   let ob = new Observable((observer) => {
-  //     console.log("Observable is running");
-  //     observer.next("Success");
-  //   })
-  //   ob.subscribe(value => {
-  //     console.log(value);
-  //   })
-  // }
-
-
-  // ngOnInit(): void {  // Emit only single value
-  //   let promise = new Promise((x) => {
-  //     x("Promise");
-  //     x("Promise1");
-  //     x("Promise2");
-
-  //   })
-  //   promise.then(value => {
-  //     console.log(value)
-
-  //   })
-  // }
-
-
-  // ngOnInit(): void { //Emits Multiple value
-  //   let test = new Observable((x)=>{
-  //     x.next("Multiple 1")
-  //     x.next("Multiple 2")
-  //   })
-  //   test.subscribe(value =>{
-  //     console.log(value);
-  //   })
-  // }
 
 
 
-}
+
+//   ngOnInit(): void {
+//     let ob = new Observable((observer)=>{
+//       setTimeout(() => {
+//         console.log("Calling Next");
+//         observer.next("First Call")
+        
+        
+//       }, 1000);
+//     });
+//       let sub = ob.subscribe(value=>{
+//         console.log(value);
+      
+//     });
+//     sub.unsubscribe()
+    
+//   }
+// }
+
+
+
+
+
+
+
 
